@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoonDelta | Workforce Portal — Coming Soon</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%230d1b4b'/><circle cx='16' cy='16' r='9' stroke='rgba(255,255,255,0.25)' stroke-width='1.5' fill='none'/><path d='M16 7 A9 9 0 0 1 25 16' stroke='%2338bdf8' stroke-width='2.5' fill='none'/><circle cx='16' cy='16' r='2' fill='%2338bdf8'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+    --blue:   #1d4ed8;
+    --blue-2: #2563eb;
+    --sky:    #38bdf8;
+    --f:      'Inter',system-ui,-apple-system,sans-serif;
+}
+html{font-family:var(--f);-webkit-font-smoothing:antialiased;}
+body{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:flex-start;
+    background:linear-gradient(145deg,#0d1b4b 0%,#1a3a8f 40%,#1d4ed8 70%,#2563eb 100%);
+    background-attachment:fixed;
+    position:relative;overflow-x:hidden;overflow-y:auto;
+    padding:72px 20px 48px;
+}
+
+/* Mesh highlight layers */
+body::before{
+    content:'';position:fixed;inset:0;
+    background:
+        radial-gradient(ellipse 60% 70% at 80% 10%,rgba(56,189,248,0.12) 0%,transparent 55%),
+        radial-gradient(ellipse 45% 60% at 10% 85%,rgba(139,92,246,0.1) 0%,transparent 55%),
+        linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
+    background-size:auto,auto,64px 64px,64px 64px;
+    pointer-events:none;z-index:0;
+}
+
+/* Large watermark */
+.nd-wm{
+    position:fixed;right:-100px;bottom:-80px;
+    width:600px;height:600px;opacity:0.05;
+    pointer-events:none;
+}
+
+/* Back to site */
+.nd-back{
+    position:fixed;top:24px;left:28px;
+    display:flex;align-items:center;gap:7px;
+    text-decoration:none;color:rgba(255,255,255,0.45);
+    font-size:13px;font-weight:500;transition:color .15s;z-index:10;
+}
+.nd-back:hover{color:rgba(255,255,255,0.8);}
+
+/* Main card */
+.nd-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:16px;
+    padding:48px 44px;
+    width:100%;max-width:580px;
+    text-align:center;
+    position:relative;z-index:1;
+    backdrop-filter:blur(12px);
+    box-shadow:0 32px 80px rgba(0,0,0,0.3);
+    margin:auto;
+}
+
+/* Logo */
+.nd-logo{
+    display:flex;align-items:center;justify-content:center;
+    gap:10px;text-decoration:none;margin-bottom:40px;
+}
+.nd-logo-name{font-size:18px;font-weight:700;color:white;letter-spacing:-0.3px;}
+.nd-logo-name span{color:var(--sky);}
+
+/* Status pill */
+.nd-status{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(56,189,248,0.12);
+    border:1px solid rgba(56,189,248,0.25);
+    color:var(--sky);
+    padding:6px 16px;border-radius:100px;
+    font-size:11.5px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;margin-bottom:28px;
+}
+.nd-status-dot{
+    width:6px;height:6px;background:var(--sky);
+    border-radius:50%;animation:nd-pulse 2s ease-in-out infinite;
+}
+@keyframes nd-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
+
+/* Icon ring */
+.nd-icon-ring{
+    width:80px;height:80px;border-radius:50%;margin:0 auto 28px;
+    background:rgba(255,255,255,0.08);
+    border:1.5px solid rgba(255,255,255,0.15);
+    display:flex;align-items:center;justify-content:center;
+}
+.nd-icon-ring svg{width:36px;height:36px;stroke:rgba(255,255,255,0.7);stroke-width:1.5;fill:none;}
+
+/* Headline */
+.nd-h1{
+    font-size:32px;font-weight:700;color:white;
+    letter-spacing:-0.6px;line-height:1.2;margin-bottom:14px;
+}
+.nd-sub{
+    font-size:15px;color:rgba(255,255,255,0.55);
+    line-height:1.75;max-width:420px;margin:0 auto 36px;
+}
+
+/* Progress bar */
+.nd-progress-wrap{margin-bottom:36px;}
+.nd-progress-label{
+    display:flex;justify-content:space-between;
+    font-size:12px;font-weight:600;color:rgba(255,255,255,0.45);
+    margin-bottom:10px;
+}
+.nd-progress-track{
+    height:5px;background:rgba(255,255,255,0.1);
+    border-radius:100px;overflow:hidden;
+}
+.nd-progress-bar{
+    height:100%;width:62%;
+    background:linear-gradient(90deg,var(--sky),var(--blue-2));
+    border-radius:100px;
+    position:relative;
+}
+.nd-progress-bar::after{
+    content:'';position:absolute;right:0;top:0;bottom:0;width:30px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3));
+    animation:nd-shimmer 2s ease-in-out infinite;
+}
+@keyframes nd-shimmer{0%,100%{opacity:0}50%{opacity:1}}
+
+/* Feature list */
+.nd-features{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;
+    margin-bottom:36px;text-align:left;
+}
+.nd-feature{
+    display:flex;align-items:flex-start;gap:10px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:14px 14px;border-radius:8px;
+}
+.nd-feature-icon{
+    width:28px;height:28px;border-radius:6px;flex-shrink:0;
+    background:rgba(56,189,248,0.12);
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+}
+.nd-feature-icon svg{width:14px;height:14px;stroke:var(--sky);stroke-width:2;fill:none;}
+.nd-feature-title{font-size:12.5px;font-weight:600;color:white;margin-bottom:2px;}
+.nd-feature-desc{font-size:11.5px;color:rgba(255,255,255,0.4);line-height:1.5;}
+
+/* Notify form */
+.nd-notify{margin-bottom:28px;}
+.nd-notify-label{
+    font-size:12px;font-weight:600;color:rgba(255,255,255,0.45);
+    text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;
+}
+.nd-notify-row{display:flex;gap:8px;}
+.nd-notify-row input{
+    flex:1;padding:10px 14px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:6px;font-size:14px;
+    font-family:var(--f);color:white;outline:none;
+    transition:border-color .15s;
+}
+.nd-notify-row input::placeholder{color:rgba(255,255,255,0.3);}
+.nd-notify-row input:focus{border-color:rgba(56,189,248,0.5);}
+.nd-notify-btn{
+    padding:10px 20px;
+    background:var(--sky);color:var(--blue);
+    border:none;border-radius:6px;
+    font-size:13.5px;font-weight:700;font-family:var(--f);
+    cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.nd-notify-btn:hover{background:white;transform:translateY(-1px);}
+.nd-notify-success{
+    display:none;padding:10px 14px;
+    background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);
+    border-radius:6px;font-size:13px;color:#86efac;text-align:left;
+}
+
+/* Back link */
+.nd-home-link{
+    display:inline-flex;align-items:center;gap:6px;
+    color:rgba(255,255,255,0.4);text-decoration:none;
+    font-size:13px;font-weight:500;transition:color .15s;
+}
+.nd-home-link:hover{color:rgba(255,255,255,0.75);}
+
+/* Powered by */
+.nd-powered{
+    margin-top:20px;padding-bottom:4px;
+    font-size:11px;color:rgba(255,255,255,0.25);
+    text-align:center;position:relative;z-index:1;
+}
+.nd-powered a{color:rgba(255,255,255,0.4);text-decoration:none;font-weight:600;}
+.nd-powered a:hover{color:rgba(255,255,255,0.7);}
+
+@media(max-width:600px){
+    body{padding:56px 16px 32px;}
+    .nd-card{padding:32px 22px;border-radius:12px;}
+    .nd-features{grid-template-columns:1fr;}
+    .nd-notify-row{flex-direction:column;}
+    .nd-h1{font-size:24px;}
+    .nd-sub{font-size:14px;}
+    .nd-icon-ring{width:64px;height:64px;}
+    .nd-icon-ring svg{width:28px;height:28px;}
+    .nd-logo-name{font-size:16px;}
+    .nd-progress-wrap{margin-bottom:28px;}
+    .nd-features{margin-bottom:28px;}
+}
+    </style>
+</head>
+<body>
+
+    <!-- Watermark -->
+    <svg class="nd-wm" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="60" cy="60" r="50" stroke="white" stroke-width="2.5" fill="none"/>
+        <circle cx="60" cy="60" r="36" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M60 10 A50 50 0 0 1 110 60" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M60 24 A36 36 0 0 1 96 60" stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <circle cx="60" cy="60" r="6" fill="white"/>
+    </svg>
+
+    <!-- Back to site -->
+    <a href="index.html" class="nd-back">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        noondelta.com
+    </a>
+
+    <div class="nd-card">
+
+        <!-- Logo -->
+        <a href="index.html" class="nd-logo">
+            <svg width="34" height="34" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="36" stroke="rgba(255,255,255,0.25)" stroke-width="5" fill="none"/>
+                <path d="M60 24 A36 36 0 0 1 96 60" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <circle cx="60" cy="60" r="5.5" fill="#38bdf8"/>
+            </svg>
+            <span class="nd-logo-name">Noon<span>Delta</span></span>
+        </a>
+
+        <!-- Status -->
+        <div class="nd-status">
+            <span class="nd-status-dot"></span>
+            Under Development
+        </div>
+
+        <!-- Icon -->
+        <div class="nd-icon-ring">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+        </div>
+
+        <h1 class="nd-h1">Workforce Portal<br>Launching Soon</h1>
+        <p class="nd-sub">
+            The NoonDelta workforce management portal is currently under active development, powered by UnaForge. We'll notify you the moment it's ready.
+        </p>
+
+        <!-- Progress -->
+        <div class="nd-progress-wrap">
+            <div class="nd-progress-label">
+                <span>Development Progress</span>
+                <span>62%</span>
+            </div>
+            <div class="nd-progress-track">
+                <div class="nd-progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Upcoming features -->
+        <div class="nd-features">
+            <div class="nd-feature">
+                <div class="nd-feature-icon">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="17" x2="22" y2="17"/><circle cx="12" cy="10" r="2"/></svg>
+                </div>
+                <div>
+                    <div class="nd-feature-title">HR Management</div>
+                    <div class="nd-feature-desc">Onboarding, attendance & performance</div>
+                </div>
+            </div>
+            <div class="nd-feature">
+                <div class="nd-feature-icon">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                </div>
+                <div>
+                    <div class="nd-feature-title">Payroll & Tax</div>
+                    <div class="nd-feature-desc">W2, 1099, direct deposit & IRS filing</div>
+                </div>
+            </div>
+            <div class="nd-feature">
+                <div class="nd-feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                </div>
+                <div>
+                    <div class="nd-feature-title">Compliance Tracking</div>
+                    <div class="nd-feature-desc">I-9, FLSA, HIPAA & certifications</div>
+                </div>
+            </div>
+            <div class="nd-feature">
+                <div class="nd-feature-icon">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div>
+                    <div class="nd-feature-title">Workforce Analytics</div>
+                    <div class="nd-feature-desc">Performance, utilization & cost insights</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notify me -->
+        <div class="nd-notify">
+            <div class="nd-notify-label">Notify me when it launches</div>
+            <div class="nd-notify-row" id="ndNotifyRow">
+                <input type="email" id="ndNotifyEmail" placeholder="your@organization.com">
+                <button class="nd-notify-btn" onclick="handleNotify()">Notify Me</button>
+            </div>
+            <div class="nd-notify-success" id="ndNotifySuccess">
+                ✓ You're on the list. We'll reach out to <span id="ndNotifyConfirm"></span> as soon as the portal is live.
+            </div>
+        </div>
+
+        <!-- Back home -->
+        <a href="index.html" class="nd-home-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Return to noondelta.com
+        </a>
+    </div>
+
+    <div class="nd-powered">Workforce platform by <a href="https://unaforge.com" target="_blank" rel="noopener">UnaForge</a></div>
+
+    <script>
+    function handleNotify() {
+        const email = document.getElementById('ndNotifyEmail').value.trim();
+        if (!email || !email.includes('@')) {
+            document.getElementById('ndNotifyEmail').focus();
+            return;
+        }
+        document.getElementById('ndNotifyRow').style.display = 'none';
+        document.getElementById('ndNotifyConfirm').textContent = email;
+        document.getElementById('ndNotifySuccess').style.display = 'block';
+    }
+    document.getElementById('ndNotifyEmail').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleNotify();
+    });
+    </script>
+</body>
+</html>

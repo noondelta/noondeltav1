@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /login.html
+Disallow: /portal.html
+
+# Sitemap location
+Sitemap: https://noondelta.com/sitemap.xml
